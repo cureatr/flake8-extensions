@@ -6,13 +6,13 @@ setup(
     version='1.0',
     author='Levi McDonough',
     author_email='levi@cureatr.com',
-    py_modules=['cureatr_flake8_print.cureatr_print_linter'],
+    py_modules=['cureatr_flake8_extensions.cureatr_print_linter'],
     zip_safe=False,
     packages=find_packages(exclude=['tests*']),
     install_requires=['flake8', 'setuptools'],
     entry_points={
         'flake8.extension': [
-            'cureatr_flake8_print = cureatr_flake8_print.cureatr_print_linter:CureatrPrintLinter',
+            'cureatr_flake8_print = cureatr_flake8_extensions.cureatr_print_linter:CureatrPrintLinter',
         ],
     },
     classifiers=[
