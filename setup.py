@@ -1,8 +1,8 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='cureatr-flake8-print',
-    description="cureatr print statement and print functionn checker plugin for flake8",
+    name='cureatr-flake8-extensions',
+    description="cureatrs flake8 extensions plugin, currently implements a print statement and print function checker plugin for flake8",
     version='1.0',
     author='Levi McDonough',
     author_email='levi@cureatr.com',
