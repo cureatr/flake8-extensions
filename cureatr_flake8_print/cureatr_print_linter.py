@@ -11,7 +11,6 @@ class CureatrPrintLinter(object):
     """Cureatr Flake8 Print checker."""
     name = 'cureatr-flake8-print'
     version = __version__
-    ignored_directories = ['testing', 'reporting']
 
     def __init__(self, tree, filename):
         self.tree = tree
@@ -19,14 +18,13 @@ class CureatrPrintLinter(object):
 
     @classmethod
     def add_options(cls, parser):
-        ignored = ','.join(cls.ignored_directories)
-        parser.add_option('--ignore-dirs', default=ignored, action='store',
+        parser.add_option('--ignore-dirs', default='', action='store',
                           type='string', help="Ignore Print Statement Directories")
         parser.config_options.append('ignore-dirs')
 
     @classmethod
     def parse_options(cls, options):
-        cls.ignore_dirs = options.ignore_dirs.split(',')
+        cls.ignore_dirs = options.ignore_dirs.split(',') if options.ignore_dirs else []
 
     def run(self):
         if any([directory in self.filename for directory in self.ignore_dirs]):
@@ -57,12 +55,13 @@ class CureatrPrintLinter(object):
     def check_tree_for_debugger_statements(self, tree, noqa):
         errors = []
         for node in ast.walk(tree):
-            if isinstance(node, ast.Call) and node.func.id == 'print':
-                errors.append({
-                    'message': self.format_debugger_message('T003', 'print function found.'),
-                    'line': node.lineno,
-                    'col': node.col_offset,
-                })
+            if isinstance(node, ast.Call) and hasattr(node.func, 'id'):
+                if node.func.id == 'print':
+                    errors.append({
+                        'message': self.format_debugger_message('T003', 'print function found.'),
+                        'line': node.lineno,
+                        'col': node.col_offset,
+                    })
             if isinstance(node, ast.Print):
                 errors.append({
                     'message': self.format_debugger_message('T002', 'print statement found.'),
