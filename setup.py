@@ -6,6 +6,7 @@ setup(
     version='1.0',
     author='Levi McDonough',
     author_email='levi@cureatr.com',
+    url='https://github.com/cureatr/flake8-extensions',
     py_modules=['cureatr_flake8_extensions.cureatr_print_linter'],
     zip_safe=False,
     packages=find_packages(exclude=['tests*']),
