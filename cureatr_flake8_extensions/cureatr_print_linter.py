@@ -18,16 +18,16 @@ class CureatrPrintLinter(object):
 
     @classmethod
     def add_options(cls, parser):
-        parser.add_option('--ignore-dirs', default='', action='store',
+        parser.add_option('--ignore-printcheck-dirs', default='', action='store',
                           type='string', help="Ignore Print Statement Directories")
-        parser.config_options.append('ignore-dirs')
+        parser.config_options.append('ignore-printcheck-dirs')
 
     @classmethod
     def parse_options(cls, options):
-        cls.ignore_dirs = options.ignore_dirs.split(',') if options.ignore_dirs else []
+        cls.ignore_printcheck_dirs = options.ignore_printcheck_dirs.split(',') if options.ignore_printcheck_dirs else []
 
     def run(self):
-        if any([directory in self.filename for directory in self.ignore_dirs]):
+        if any([directory in self.filename for directory in self.ignore_printcheck_dirs]):
             return
         if self.filename == stdin:
             noqa = get_noqa_lines(self.filename)
