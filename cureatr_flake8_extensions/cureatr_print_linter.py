@@ -2,6 +2,7 @@
 import re
 import ast
 import tokenize
+import re
 from sys import stdin
 
 __version__ = '1.0'
@@ -24,11 +25,12 @@ class CureatrPrintLinter(object):
 
     @classmethod
     def parse_options(cls, options):
-        cls.ignore_printcheck_dirs = options.ignore_printcheck_dirs.split(',') if options.ignore_printcheck_dirs else []
+        cls.ignore_printcheck_dirs = re.compile('|'.join(['^{}|/{}/'.format(option, option) for option in options.ignore_printcheck_dirs.split(',')])) if options.ignore_printcheck_dirs else None
 
     def run(self):
-        if any([directory in self.filename for directory in self.ignore_printcheck_dirs]):
-            return
+        if self.ignore_printcheck_dirs:
+            if re.search(self.ignore_printcheck_dirs, self.filename):
+                return
         if self.filename == stdin:
             noqa = get_noqa_lines(self.filename)
         else:
