@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 setup(
     name='cureatr-flake8-extensions',
     description="cureatrs flake8 extensions plugin, currently implements a print statement and print function checker plugin for flake8",
-    version='1.2',
+    version='1.3',
     author='Levi McDonough',
     author_email='levi@cureatr.com',
     url='https://github.com/cureatr/flake8-extensions',
