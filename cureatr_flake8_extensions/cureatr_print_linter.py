@@ -12,7 +12,8 @@ class CureatrPrintLinter(object):
     """Cureatr Flake8 Print checker."""
     name = 'cureatr-flake8-print'
     version = __version__
-    off_by_default = True
+    print_statement_code = 'T002'
+    print_function_code = 'T003'
 
     def __init__(self, tree, filename):
         self.tree = tree
@@ -23,10 +24,14 @@ class CureatrPrintLinter(object):
         parser.add_option('--ignore-path-regex', default='', action='store',
                           type='string', help="Ignore Print Statement Directories")
         parser.config_options.append('ignore-path-regex')
+        parser.add_option('--enable-extension', default='', action='store',
+                          type='string', help="Enables print check extension.")
+        parser.config_options.append('enable-extension')
 
     @classmethod
     def parse_options(cls, options):
         cls.ignore_path_regex = re.compile(options.ignore_path_regex) if options.ignore_path_regex else None
+        cls.enable_extension = [option for option in options.enable_extension.split(',')] if options.enable_extension else list()
 
     def run(self):
         if self.ignore_path_regex:
@@ -58,16 +63,16 @@ class CureatrPrintLinter(object):
     def check_tree_for_debugger_statements(self, tree, noqa):
         errors = []
         for node in ast.walk(tree):
-            if isinstance(node, ast.Call) and hasattr(node.func, 'id'):
+            if isinstance(node, ast.Call) and hasattr(node.func, 'id') and self.print_function_code in self.enable_extension:
                 if node.func.id == 'print':
                     errors.append({
-                        'message': self.format_debugger_message('T003', 'print function found.'),
+                        'message': self.format_debugger_message(self.print_function_code, 'print function found.'),
                         'line': node.lineno,
                         'col': node.col_offset,
                     })
-            if isinstance(node, ast.Print):
+            if isinstance(node, ast.Print) and self.print_statement_code in self.enable_extension:
                 errors.append({
-                    'message': self.format_debugger_message('T002', 'print statement found.'),
+                    'message': self.format_debugger_message(self.print_statement_code, 'print statement found.'),
                     'line': node.lineno,
                     'col': node.col_offset,
                 })
