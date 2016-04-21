@@ -5,7 +5,7 @@ import tokenize
 import re
 from sys import stdin
 
-__version__ = '1.0'
+__version__ = '1.2'
 
 
 class CureatrPrintLinter(object):
