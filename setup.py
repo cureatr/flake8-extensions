@@ -7,7 +7,7 @@ setup(
     author='Levi McDonough',
     author_email='levi@cureatr.com',
     url='https://github.com/cureatr/flake8-extensions',
-    download_url='https://github.com/cureatr/flake8-extensions/tarball/1.0',
+    download_url='https://github.com/cureatr/flake8-extensions/tarball/1.3',
     py_modules=['cureatr_flake8_extensions.cureatr_print_linter'],
     zip_safe=False,
     packages=find_packages(exclude=['tests*']),
