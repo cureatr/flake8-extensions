@@ -5,7 +5,7 @@ import tokenize
 import re
 from sys import stdin
 
-__version__ = '1.2'
+__version__ = '1.3'
 
 
 class CureatrPrintLinter(object):
@@ -19,17 +19,17 @@ class CureatrPrintLinter(object):
 
     @classmethod
     def add_options(cls, parser):
-        parser.add_option('--ignore-printcheck-dirs', default='', action='store',
+        parser.add_option('--ignore-path-regex', default='', action='store',
                           type='string', help="Ignore Print Statement Directories")
-        parser.config_options.append('ignore-printcheck-dirs')
+        parser.config_options.append('ignore-path-regex')
 
     @classmethod
     def parse_options(cls, options):
-        cls.ignore_printcheck_dirs = re.compile('|'.join(['^{}|/{}/'.format(option, option) for option in options.ignore_printcheck_dirs.split(',')])) if options.ignore_printcheck_dirs else None
+        cls.ignore_path_regex = re.compile(options.ignore_path_regex) if options.ignore_path_regex else None
 
     def run(self):
-        if self.ignore_printcheck_dirs:
-            if re.search(self.ignore_printcheck_dirs, self.filename):
+        if self.ignore_path_regex:
+            if re.search(self.ignore_path_regex, self.filename):
                 return
         if self.filename == stdin:
             noqa = get_noqa_lines(self.filename)
