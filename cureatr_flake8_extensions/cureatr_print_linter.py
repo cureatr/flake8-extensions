@@ -12,6 +12,7 @@ class CureatrPrintLinter(object):
     """Cureatr Flake8 Print checker."""
     name = 'cureatr-flake8-print'
     version = __version__
+    off_by_default = True
 
     def __init__(self, tree, filename):
         self.tree = tree
