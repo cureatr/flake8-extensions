@@ -2,10 +2,9 @@
 import re
 import ast
 import tokenize
-import re
 from sys import stdin
 
-__version__ = '1.3'
+__version__ = '1.4'
 
 
 class CureatrPrintLinter(object):
@@ -21,12 +20,10 @@ class CureatrPrintLinter(object):
 
     @classmethod
     def add_options(cls, parser):
-        parser.add_option('--ignore-path-regex', default='', action='store',
+        parser.add_option('--ignore-path-regex', default='', action='store', parse_from_config=True,
                           type='string', help="Ignore Print Statement Directories")
-        parser.config_options.append('ignore-path-regex')
-        parser.add_option('--enable-extension', default='', action='store',
+        parser.add_option('--enable-extension', default='', action='store', parse_from_config=True,
                           type='string', help="Enables print check extension.")
-        parser.config_options.append('enable-extension')
 
     @classmethod
     def parse_options(cls, options):
@@ -38,7 +35,7 @@ class CureatrPrintLinter(object):
             if re.search(self.ignore_path_regex, self.filename):
                 return
         if self.filename == stdin:
-            noqa = get_noqa_lines(self.filename)
+            noqa = self.get_noqa_lines(self.filename)
         else:
             with open(self.filename, 'r') as file_to_check:
                 noqa = self.get_noqa_lines(file_to_check.readlines())
